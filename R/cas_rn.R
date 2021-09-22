@@ -15,7 +15,7 @@
 #' cas_rn("file.xlsx")
 
 
-cas_rn <- function(file = "",
+cas_rn <- function(datasource = "",
                    analyte_column = 1,
                    db = "NIST",
                    header = TRUE,
@@ -27,7 +27,7 @@ cas_rn <- function(file = "",
 
 
   if (file == ""){
-    stop("Please input the file path of your list of analytes.")
+    stop("Please input the file path or  of your list of analytes.")
   }
 
   if(toupper(db) != "NIST"){
@@ -38,8 +38,9 @@ cas_rn <- function(file = "",
     df <- readr::read_csv(file, header = header)
   }else if(grepl("[.]xls", file)){
     df <- readxl::read_excel(file, col_names = header)
+  }else if(is.data.frame(datasource)){
+    df <- datasource
   }
-
 
 
 
