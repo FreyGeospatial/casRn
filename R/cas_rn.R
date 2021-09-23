@@ -26,27 +26,25 @@ cas_rn <- function(datasource = "",
                    verbose = F){
 
 
-  if (file == ""){
-    stop("Please input the file path or  of your list of analytes.")
-  }
 
   if(toupper(db) != "NIST"){
     stop("Only the NIST database is currently supported. Other databases will be implemented in future versions")
   }
 
-  if (grepl("[.]csv", file)){
-    df <- readr::read_csv(file, header = header)
-  }else if(grepl("[.]xls", file)){
-    df <- readxl::read_excel(file, col_names = header)
+  if (grepl("[.]csv", datasource)){
+    df <- readr::read_csv(datasource, header = header)
+  }else if(grepl("[.]xls", datasource)){
+    df <- readxl::read_excel(datasource, col_names = header)
   }else if(is.data.frame(datasource)){
     df <- datasource
+  }else{
+    df <- as.data.frame(datasource)
   }
-
-
 
   df$cas_rn <- NA
 
   analyte <- unlist(df[,analyte_column])
+
 
   if(toupper(db) == "NIST"){
     base_url <- "https://webbook.nist.gov/cgi/cbook.cgi?Name="
@@ -78,14 +76,14 @@ cas_rn <- function(datasource = "",
 
     cas_string <- resHeaders[grepl("CAS Registry Number:", resHeaders)]
 
-    message(cas_string)
+    #message(cas_string)
 
     if(length(cas_string > 0)){
       cas_rn <- stringr::str_extract(cas_string, "(\\d{2,7})-(\\d{2})-(\\d{1})")
       df$cas_rn[i] <- cas_rn
     }
 
-    message(cas_rn)
+    #message(cas_rn)
 
   }
 

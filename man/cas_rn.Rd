@@ -5,7 +5,7 @@
 \title{A Function}
 \usage{
 cas_rn(
-  file = "",
+  datasource = "",
   analyte_column = 1,
   db = "NIST",
   header = TRUE,
@@ -18,7 +18,7 @@ cas_rn(
 )
 }
 \arguments{
-\item{file}{The file}
+\item{datasource}{The file/df}
 
 \item{db}{database}
 
