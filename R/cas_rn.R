@@ -2,7 +2,7 @@
 #'
 #' This function allows you to webscrape NIST
 #' @param datasource A dataframe containing the analyte names
-#' @param db Character. The online database from which CAS RNs are scraped from
+#' @param db Character. The online database from which CAS RNs are scraped from. Defaults to "NIST"
 #' @param header TRUE
 #' @param browser Character. Defaults to chrome.
 #' @param chomever Character. The browser version running on your machine.
@@ -15,7 +15,7 @@
 #' cas_rn("file.xlsx")
 
 
-cas_rn <- function(datasource = "",
+cas_rn <- function(datasource,
                    analyte_column = 1,
                    db = "NIST",
                    header = TRUE,
@@ -31,17 +31,33 @@ cas_rn <- function(datasource = "",
     stop("Only the NIST database is currently supported. Other databases will be implemented in future versions")
   }
 
-  if (grepl("[.]csv", datasource)){
-    df <- readr::read_csv(datasource, header = header)
-  }else if(grepl("[.]xls", datasource)){
-    df <- readxl::read_excel(datasource, col_names = header)
-  }else if(is.data.frame(datasource)){
-    df <- datasource
+  if (!is.data.frame(datasource)){
+    stop("Only dataframes are supported.")
   }else{
-    df <- as.data.frame(datasource)
+    df <- datasource
   }
 
-  df$cas_rn <- NA
+  # if (grepl("[.]csv", datasource)){
+  #   df <- readr::read_csv(datasource, header = header)
+  # }else if(grepl("[.]xls", datasource)){
+  #   df <- readxl::read_excel(datasource, col_names = header)
+  # }else if(is.data.frame(datasource)){
+  #   df <- datasource
+  # }else{
+  #   df <- as.data.frame(datasource)
+  # }
+
+
+  if ("cas_rn" %in% colnames(df)){
+    count <- 1
+    while(paste0("cas_rn", count) %in% colnames(df)){
+      count <- count + 1
+    }
+    df[,paste0(cas_rn, count)] <- NA
+  }else{
+    df$cas_rn <- NA
+  }
+
 
   analyte <- unlist(df[,analyte_column])
 
