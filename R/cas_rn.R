@@ -1,14 +1,14 @@
 #' A Function
 #'
 #' This function allows you to webscrape NIST
-#' @param datasource The file/df
-#' @param db database
+#' @param datasource A dataframe containing the analyte names
+#' @param db Character. The online database from which CAS RNs are scraped from
 #' @param header TRUE
-#' @param browser TRYE
-#' @param chomever number
-#' @param port random
-#' @param extraCapabilities Later
-#' @param verbose NOPE
+#' @param browser Character. Defaults to chrome.
+#' @param chomever Character. The browser version running on your machine.
+#' @param port Integer. Randomly generated integer containing 4 digits between 1000 and 9999.
+#' @param extraCapabilities Contains a vector of character arguments. Currently allows for headless browsing. Defaults to `list(chromeOptions = list(args = c('--headless', '--disable-gpu')))`
+#' @param verbose Logical. Defaults to FALSE.
 #' @keywords cas_rn
 #' @export
 #' @examples
