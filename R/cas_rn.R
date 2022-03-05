@@ -32,20 +32,11 @@ cas_rn <- function(datasource,
   }
 
   if (!is.data.frame(datasource)){
-    stop("Only dataframes are supported.")
+    stop("Only dataframes are currently supported.")
   }else{
     df <- datasource
   }
 
-  # if (grepl("[.]csv", datasource)){
-  #   df <- readr::read_csv(datasource, header = header)
-  # }else if(grepl("[.]xls", datasource)){
-  #   df <- readxl::read_excel(datasource, col_names = header)
-  # }else if(is.data.frame(datasource)){
-  #   df <- datasource
-  # }else{
-  #   df <- as.data.frame(datasource)
-  # }
 
 
   if ("cas_rn" %in% colnames(df)){
@@ -70,6 +61,21 @@ cas_rn <- function(datasource,
 
 
 
+  # x <<- try(RSelenium::rsDriver(port = port, chromever = chromever, verbose = F, extraCapabilities = extraCapabilities))
+  x <- try(RSelenium::rsDriver(port = port, chromever = chromever, verbose = F, extraCapabilities = extraCapabilities))
+  if(grepl("version requested doesnt match versions available", x)){
+    message("Trying to automatically detect available chrome version...")
+    chromever <- x %>% str_split("= ", simplify=T) %>%
+      str_split(., ",", simplify = T) %>%
+      str_split(., "\n", simplify = T) %>%
+      as.vector() %>% as.data.frame() %>%
+      rename(V1 = ".") %>%
+      filter(V1 != "")
+
+    chromever <- chromever$V1[grepl("\\d", chromever$V1)][1]
+
+    message(paste0("using chrome version ", chromever))
+  }
 
   rD <- RSelenium::rsDriver(port = port, chromever = chromever, verbose = F, extraCapabilities = extraCapabilities)
   for (i in 1:nrow(df)){
