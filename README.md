@@ -14,3 +14,5 @@ will yield
 ```
 
 Typos or synonyms not found in the database will yield `NA` values.
+
+This package is currently only available for Windows until I can create a Docker solution to allow for interoperability across all platforms.
