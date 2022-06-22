@@ -16,3 +16,5 @@ will yield
 Typos or synonyms not found in the database will yield `NA` values.
 
 This package is currently only available for Windows until I can create a Docker solution to allow for interoperability across all platforms.
+
+*6/22/2022 Update: No guarantees that this package is functional on any platform. Please standby until I can set aside time for bug fixes (or a complete overhaul of how this package is setup). However, I am happy to review any PRs, for those wishing to help :)
